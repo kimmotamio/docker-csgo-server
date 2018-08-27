@@ -1,9 +1,10 @@
-FROM ubuntu:16.04
-MAINTAINER Max Gonzih <gonzih at gmail dot com>
+FROM ubuntu:18.04
 
 ENV USER csgo
 ENV HOME /home/$USER
 ENV SERVER $HOME/hlserver
+ENV METAMOD_VERSION 1.10.7
+ENV SOURCEMOD_VERSION 1.9.0-git6251
 
 RUN apt-get -y update \
     && apt-get -y upgrade \
@@ -25,6 +26,9 @@ RUN chown -R $USER:$USER $SERVER
 USER $USER
 RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C $SERVER -xvz \
  && $SERVER/update.sh
+
+RUN curl https://mms.alliedmods.net/mmsdrop/1.10/mmsource-$METAMOD_VERSION-git966-linux.tar.gz | tar xvz -C $SERVER/csgo
+RUN curl https://sm.alliedmods.net/smdrop/1.9/sourcemod-$SOURCEMOD_VERSION-linux.tar.gz | tar xvz -C $SERVER/csgo
 
 EXPOSE 27015/udp
 
